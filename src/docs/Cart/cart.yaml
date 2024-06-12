@@ -1,0 +1,165 @@
+paths:
+  /api/cart/{cid}:
+    get:
+      summary: Obtener todos los productos del carrito con detalle
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del carrito a consultar
+      responses:
+        '200':
+          description: Carrito obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor al consultar carrito
+    put:
+      summary: Actualizar el carrito con un arreglo de productos
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del carrito a actualizar
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              products:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Carrito actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Carrito actualizado exitosamente"
+        '500':
+          description: Error interno del servidor al actualizar carrito
+    delete:
+      summary: Eliminar todos los productos del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del carrito a limpiar
+      responses:
+        '200':
+          description: Todos los productos eliminados del carrito
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Carrito limpiado exitosamente"
+        '500':
+          description: Error interno del servidor al eliminar todos los productos del carrito
+
+  /api/cart/{cid}/products/{pid}:
+    delete:
+      summary: Eliminar un producto específico del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del carrito
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del producto a eliminar
+      responses:
+        '200':
+          description: Producto eliminado del carrito exitosamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto eliminado del carrito exitosamente"
+        '500':
+          description: Error interno del servidor al eliminar producto del carrito
+    put:
+      summary: Actualizar la cantidad de ejemplares de un producto en el carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del carrito
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del producto a actualizar
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              quantity:
+                type: number
+                description: Nueva cantidad del producto
+      responses:
+        '200':
+          description: Cantidad del producto actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Cantidad del producto actualizada exitosamente"
+        '500':
+          description: Error interno del servidor al actualizar cantidad del producto en el carrito
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id del producto
+        quantity:
+          type: number
+          description: Cantidad del producto
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del carrito
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+      example:
+        _id: "60d9f8f8f8f8f8f8f8f8f8f8"
+        products:
+          - id: 
